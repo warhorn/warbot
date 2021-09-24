@@ -27,6 +27,14 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
    found 0 vulnerabilities
    ```
 
+3. Create your local configuration file
+
+   ```sh
+   $ cp .env.sample .env
+   ```
+
+   Retrieve the bot token from the [Discord bot settings page](https://discord.com/developers/applications/701978523182694481/bot) and replace the `DISCORD_BOT_TOKEN` environment variable's placeholder value with the real bot token.
+
 ### Code style and quality
 
 This project uses [Prettier](https://prettier.io/) to auto-format code and [ESLint](https://eslint.org/) to detect code quality issues.

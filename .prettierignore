@@ -1,4 +1,6 @@
 # Ignore artifacts:
+.env
+.env.sample
 build
 coverage
 node_modules
