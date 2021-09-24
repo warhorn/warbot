@@ -26,3 +26,11 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
 
    found 0 vulnerabilities
    ```
+
+### Code style and quality
+
+This project uses [Prettier](https://prettier.io/) to auto-format code and [ESLint](https://eslint.org/) to detect code quality issues.
+
+Prettier runs in a git pre-commit hook, so code formatting will happen when you stage changes. You can also [set up your editor](https://prettier.io/docs/en/editors.html) to run it as you work.
+
+Similarly, you can [set up your editor](https://eslint.org/docs/user-guide/integrations) to run ESLint as you make changes.
