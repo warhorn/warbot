@@ -6,7 +6,7 @@ orbs:
   node: circleci/node@4.7
 
 workflows:
-  sample:
+  ci:
     jobs:
       - node/test:
           version: "16.10"
