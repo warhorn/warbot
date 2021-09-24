@@ -1,0 +1,2 @@
+# warbot
+Warhorn Discord bot
