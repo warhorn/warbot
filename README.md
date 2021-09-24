@@ -31,9 +31,13 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
 
 3. Create your local environment file
 
+   <!-- markdownlint-disable MD014 -->
+
    ```sh
    $ cp .env.sample .env
    ```
+
+   <!-- markdownlint-restore -->
 
    Retrieve the bot token from the [Discord bot settings page](https://discord.com/developers/applications/701978523182694481/bot) and replace the `DISCORD_BOT_TOKEN` environment variable's placeholder value with the real bot token. If you do not have access to that page, ask for it in `#bot_dev` on the Warhorn Discord server.
 
