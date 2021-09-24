@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/warhorn/warbot/issues"
   },
-  "homepage": "https://github.com/warhorn/warbot#readme"
+  "homepage": "https://github.com/warhorn/warbot#readme",
+  "dependencies": {
+    "discord.js": "^13.1.0"
+  }
 }
