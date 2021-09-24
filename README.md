@@ -41,7 +41,50 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
 
    Retrieve the bot token from the [Discord bot settings page](https://discord.com/developers/applications/701978523182694481/bot) and replace the `DISCORD_BOT_TOKEN` environment variable's placeholder value with the real bot token. If you do not have access to that page, ask for it in `#bot_dev` on the Warhorn Discord server.
 
-4. Start the bot
+4. Run the tests
+
+   ```sh
+   $ npm test
+
+   > warbot@0.0.1 test
+   > jest
+
+   PASS  src/bot.test.js
+   start
+      ✓ logs in (12 ms)
+
+   Test Suites: 1 passed, 1 total
+   Tests:       1 passed, 1 total
+   Snapshots:   0 total
+   Time:        0.229 s, estimated 1 s
+   Ran all test suites.
+   ```
+
+   You can also run the tests in "watch" mode, which re-runs them every time a source file changes.
+
+   ```sh
+   $ npm run test:watch
+
+    PASS  src/bot.test.js
+     start
+       ✓ logs in (12 ms)
+
+   Test Suites: 1 passed, 1 total
+   Tests:       1 passed, 1 total
+   Snapshots:   0 total
+   Time:        0.233 s, estimated 1 s
+   Ran all test suites related to changed files.
+
+   Watch Usage
+   › Press a to run all tests.
+   › Press f to run only failed tests.
+   › Press p to filter by a filename regex pattern.
+   › Press t to filter by a test name regex pattern.
+   › Press q to quit watch mode.
+   › Press Enter to trigger a test run.
+   ```
+
+5. Start the bot
 
    ```sh
    $ npm start
