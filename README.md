@@ -12,4 +12,4 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
 
 1. Install Node. If you aren't familiar with how to do this, Discord.js has a [great explanation of how to do this](https://discordjs.guide/preparations/#installing-node-js).
 
-If you choose to use [NVM](https://github.com/nvm-sh/nvm) to manage your Node installation, note that this project contains an `.nvmrc` file.
+   _Note:_ This project contains an `.nvmrc` file in case you'd like to use [NVM](https://github.com/nvm-sh/nvm) to manage your Node installation.
