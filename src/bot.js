@@ -5,7 +5,16 @@ class Bot {
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
     this.token = token;
 
-    this.client.once("ready", () => console.log("Bot is ready for service"));
+    this.client.once("ready", this.onReady);
+    this.client.on("messageCreate", this.onMessageCreate);
+  }
+
+  onMessageCreate(msg) {
+    if (msg.content === "ping") msg.reply("pong");
+  }
+
+  onReady(c) {
+    console.log(`Logged in as '${c.user.tag}' and ready for service`);
   }
 
   start() {
