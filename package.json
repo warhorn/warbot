@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A Discord bot for Warhorn",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=16.6.0"
+  },
   "scripts": {
     "prepare": "husky install",
     "start": "node src/index.js",
