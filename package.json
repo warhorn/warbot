@@ -28,9 +28,11 @@
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "graphql": "^16.2.0",
-    "graphql-request": "^3.7.0"
+    "graphql-request": "^3.7.0",
+    "luxon": "^2.2.0"
   },
   "devDependencies": {
+    "@types/luxon": "^2.0.8",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.2",

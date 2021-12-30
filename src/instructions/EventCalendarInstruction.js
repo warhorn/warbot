@@ -1,5 +1,7 @@
 "use strict";
 
+const { DateTime } = require("luxon");
+
 const BaseInstruction = require("./BaseInstruction");
 
 class EventCalendarInstruction extends BaseInstruction {
@@ -10,12 +12,22 @@ class EventCalendarInstruction extends BaseInstruction {
   }
 
   async execute(warhorn) {
+    const startsAfter = DateTime.now();
+
     // TODO: replace with real logging
-    console.log(`Fetching the calendar for event '${this.slug}'`);
+    console.log(
+      `Fetching the calendar for event '${this.slug}' starting after ${startsAfter}`
+    );
 
     this.message.channel.sendTyping();
 
-    const sessions = await warhorn.fetchEventCalendar(this.slug);
+    // TODO: allow user to page through the result set
+    const connection = await warhorn.fetchEventCalendar(this.slug, {
+      startsAfter,
+    });
+    const sessions = connection.nodes;
+
+    // TODO: rich message
     this.message.author.send(JSON.stringify(sessions, undefined, 2));
   }
 

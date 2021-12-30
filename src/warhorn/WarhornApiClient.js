@@ -3,8 +3,8 @@
 const { gql, GraphQLClient } = require("graphql-request");
 
 const EVENT_CALENDAR_QUERY = gql`
-  query EventCalendar($slug: String!) {
-    eventSessions(events: [$slug]) {
+  query EventCalendar($slug: String!, $startsAfter: ISO8601DateTime) {
+    eventSessions(events: [$slug], startsAfter: $startsAfter) {
       nodes {
         id
       }
@@ -21,11 +21,13 @@ class WarhornApiClient {
     });
   }
 
-  async fetchEventCalendar(slug) {
+  async fetchEventCalendar(slug, { startsAfter = null } = {}) {
     const data = await this.sendQuery(EVENT_CALENDAR_QUERY, {
       slug,
+      startsAfter: startsAfter?.toString(),
     });
-    return data.eventSessions.nodes;
+
+    return data.eventSessions;
   }
 
   sendQuery(query, variables) {
