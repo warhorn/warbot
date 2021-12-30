@@ -10,6 +10,7 @@ const Bot = require("./bot");
 const bot = new Bot(
   process.env.DISCORD_BOT_TOKEN,
   process.env.WARHORN_APP_TOKEN,
-  process.env.WARHORN_GRAPHQL_URL
+  process.env.WARHORN_GRAPHQL_URL,
+  process.env.WARHORN_WEB_URL
 );
 bot.start();

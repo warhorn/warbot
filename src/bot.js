@@ -19,13 +19,22 @@ const PARTIALS = [
 ];
 
 class Bot {
-  constructor(discordToken, warhornToken, warhornUrl) {
+  constructor(
+    discordToken,
+    warhornToken,
+    warhornEndpointUrl,
+    warhornWebBaseUrl
+  ) {
     this.client = new Client({
       intents: INTENTS,
       partials: PARTIALS,
     });
     this.discordToken = discordToken;
-    this.warhornClient = new WarhornApiClient(warhornToken, warhornUrl);
+    this.warhornClient = new WarhornApiClient(
+      warhornToken,
+      warhornEndpointUrl,
+      warhornWebBaseUrl
+    );
 
     // this.client.on("debug", console.log);
 
