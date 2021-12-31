@@ -9,6 +9,7 @@ describe("handle", () => {
   describe("with a supported instruction", () => {
     beforeEach(() => {
       message = {
+        content: "!warhorn foobar baz quux",
         author: {
           tag: "warhorn@1234",
         },
@@ -19,7 +20,7 @@ describe("handle", () => {
       };
       instruction = {
         execute: jest.fn(),
-        toString: () => "foobar",
+        toString: () => "foobar baz quux",
       };
       jest.spyOn(Instruction, "apply").mockImplementation(() => instruction);
     });

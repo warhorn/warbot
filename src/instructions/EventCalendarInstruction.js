@@ -7,8 +7,8 @@ const { client: warhorn } = require("../warhorn");
 const { EventCalendarMessage } = require("./messages");
 
 class EventCalendarInstruction extends BaseInstruction {
-  constructor(message, args) {
-    super(message, args);
+  constructor(args) {
+    super(args);
 
     this.slug = this.args[0];
   }

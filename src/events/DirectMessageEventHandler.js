@@ -14,7 +14,7 @@ class DirectMessageEventHandler {
       type: "DirectMessage",
     });
 
-    const instruction = Instruction.apply(message);
+    const instruction = Instruction.apply(message.content);
     if (!instruction) return;
 
     // TODO: validate instruction before executing, replying with usage info when invalid

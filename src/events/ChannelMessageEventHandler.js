@@ -5,6 +5,8 @@ const { v4: uuidv4 } = require("uuid");
 const { Instruction } = require("../instructions");
 const { logger: defaultLogger } = require("../util");
 
+const INSTRUCTION_REGEX = /^!warhorn\s+(?<instruction>.+)$/;
+
 class ChannelMessageEventHandler {
   static async handle(message) {
     const logger = defaultLogger.child({
@@ -15,7 +17,10 @@ class ChannelMessageEventHandler {
       type: "ChannelMessage",
     });
 
-    const instruction = Instruction.apply(message);
+    const match = message.content.trim().match(INSTRUCTION_REGEX);
+    if (!match) return;
+
+    const instruction = Instruction.apply(match.groups.instruction);
     if (!instruction) return;
 
     // TODO: validate instruction before executing, replying with usage info when invalid

@@ -1,8 +1,7 @@
 "use strict";
 
 class BaseInstruction {
-  constructor(message, args) {
-    this.message = message;
+  constructor(args) {
     this.args = args;
   }
 
