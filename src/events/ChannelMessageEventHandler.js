@@ -5,13 +5,14 @@ const { v4: uuidv4 } = require("uuid");
 const { Instruction } = require("../instructions");
 const { logger: defaultLogger } = require("../util");
 
-class DirectMessageEventHandler {
+class ChannelMessageEventHandler {
   static async handle(message) {
     const logger = defaultLogger.child({
+      channel: message.channel.name,
       on: "messageCreate",
       request_id: uuidv4(),
       sender: message.author.tag,
-      type: "DirectMessage",
+      type: "ChannelMessage",
     });
 
     const instruction = Instruction.apply(message);
@@ -23,7 +24,7 @@ class DirectMessageEventHandler {
     try {
       await instruction.execute(
         { logger },
-        (response) => message.author.send(response),
+        (response) => message.reply(response),
         () => message.channel.sendTyping()
       );
       status = "OK";
@@ -33,7 +34,7 @@ class DirectMessageEventHandler {
       logger.error("Error executing instruction", { err });
       status = "ERR";
 
-      message.author.send(
+      message.reply(
         "Oops! Something went wrong when executing your instruction. Check the syntax of your message and try again."
       );
     }
@@ -45,4 +46,4 @@ class DirectMessageEventHandler {
   }
 }
 
-module.exports = DirectMessageEventHandler;
+module.exports = ChannelMessageEventHandler;

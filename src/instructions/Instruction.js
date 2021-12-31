@@ -5,8 +5,11 @@ const EventCalendarInstruction = require("./EventCalendarInstruction");
 const INSTRUCTION_REGEX = /^!warhorn\s+(?<instruction>.+)$/;
 const TOKEN_WHITESPACE_REGEX = /\s+/;
 
+// TODO: prefix is only needed for a channel message without a mention, so move that
+// parsing logic into the channel message handler
+
 class Instruction {
-  static apply(message, context) {
+  static apply(message) {
     // per https://github.com/meew0/discord-bot-best-practices, if the user sends an
     // instruction that doesn't exist, just fail silently
 
@@ -17,7 +20,7 @@ class Instruction {
       TOKEN_WHITESPACE_REGEX
     );
     if (instructionPrefix === EventCalendarInstruction.Prefix) {
-      return new EventCalendarInstruction(message, args, context);
+      return new EventCalendarInstruction(message, args);
     }
 
     return null;

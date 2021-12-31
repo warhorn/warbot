@@ -7,17 +7,16 @@ const { client: warhorn } = require("../warhorn");
 const { EventCalendarMessage } = require("./messages");
 
 class EventCalendarInstruction extends BaseInstruction {
-  constructor(message, args, context) {
+  constructor(message, args) {
     super(message, args);
 
-    this.context = context;
     this.slug = this.args[0];
   }
 
-  async execute() {
+  async execute(context, responder, sendTyping) {
     const startsAfter = DateTime.now();
 
-    this.message.channel.sendTyping();
+    sendTyping();
 
     // TODO: allow user to page through the result set
     const connection = await warhorn.fetchEventCalendar(
@@ -25,11 +24,11 @@ class EventCalendarInstruction extends BaseInstruction {
       {
         startsAfter,
       },
-      { logger: this.context.logger }
+      context
     );
 
-    const content = EventCalendarMessage.format(this.slug, connection.nodes);
-    this.message.author.send(content);
+    const response = EventCalendarMessage.format(this.slug, connection.nodes);
+    responder(response);
   }
 
   prefix() {

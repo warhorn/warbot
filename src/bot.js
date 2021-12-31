@@ -2,7 +2,10 @@
 
 const { Client, Intents } = require("discord.js");
 
-const { DirectMessageEventHandler } = require("./events");
+const {
+  ChannelMessageEventHandler,
+  DirectMessageEventHandler,
+} = require("./events");
 const { config, logger } = require("./util");
 
 const INTENTS = [
@@ -31,10 +34,16 @@ class Bot {
     });
 
     this.client.on("messageCreate", async (message) => {
-      if (message.channel.type === "DM") {
-        DirectMessageEventHandler.handle(message);
-      } else {
-        // TODO: reply to sender in the channel
+      switch (message.channel.type) {
+        case "DM":
+          DirectMessageEventHandler.handle(message);
+          break;
+        case "GROUP_DM":
+          DirectMessageEventHandler.handle(message);
+          break;
+        case "GUILD_TEXT":
+          ChannelMessageEventHandler.handle(message);
+          break;
       }
     });
   }

@@ -14,37 +14,32 @@ jest.mock("../warhorn/WarhornApiClient", () => {
 });
 
 describe("execute", () => {
-  let message, args, context, instruction;
+  let message, args, context, instruction, responder, sendTyping;
 
   beforeEach(() => {
-    message = {
-      author: {
-        send: jest.fn(),
-      },
-      channel: {
-        sendTyping: jest.fn(),
-      },
-    };
+    message = {};
     args = ["bionic-dwarf"];
     context = {};
-    instruction = new EventCalendarInstruction(message, args, context);
+    instruction = new EventCalendarInstruction(message, args);
+    responder = jest.fn();
+    sendTyping = jest.fn();
   });
 
   test("sends a typing event to the channel", async () => {
-    await instruction.execute();
+    await instruction.execute(context, responder, sendTyping);
 
-    expect(message.channel.sendTyping).toHaveBeenCalled();
+    expect(sendTyping).toHaveBeenCalled();
   });
 
   test("fetches the event calendar", async () => {
-    await instruction.execute();
+    await instruction.execute(context, responder, sendTyping);
 
     expect(warhorn.fetchEventCalendar).toHaveBeenCalled();
   });
 
-  test("sends a reply message", async () => {
-    await instruction.execute();
+  test("sends a response message", async () => {
+    await instruction.execute(context, responder, sendTyping);
 
-    expect(message.author.send).toHaveBeenCalled();
+    expect(responder).toHaveBeenCalled();
   });
 });
