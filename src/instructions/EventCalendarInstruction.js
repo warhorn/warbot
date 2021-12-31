@@ -3,6 +3,7 @@
 const { DateTime } = require("luxon");
 
 const BaseInstruction = require("./BaseInstruction");
+const { client: warhorn } = require("../warhorn");
 const { EventCalendarMessage } = require("./messages");
 
 class EventCalendarInstruction extends BaseInstruction {
@@ -19,7 +20,7 @@ class EventCalendarInstruction extends BaseInstruction {
     this.message.channel.sendTyping();
 
     // TODO: allow user to page through the result set
-    const connection = await this.context.warhorn.fetchEventCalendar(
+    const connection = await warhorn.fetchEventCalendar(
       this.slug,
       {
         startsAfter,
@@ -27,14 +28,8 @@ class EventCalendarInstruction extends BaseInstruction {
       { logger: this.context.logger }
     );
 
-    const message = EventCalendarMessage.format(
-      {
-        baseUrl: this.context.warhorn.webBaseUrl,
-        eventSlug: this.slug,
-      },
-      connection.nodes
-    );
-    this.message.author.send(message);
+    const content = EventCalendarMessage.format(this.slug, connection.nodes);
+    this.message.author.send(content);
   }
 
   prefix() {

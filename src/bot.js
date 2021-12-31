@@ -3,8 +3,7 @@
 const { Client, Intents } = require("discord.js");
 
 const { DirectMessageEventHandler } = require("./events");
-const { logger } = require("./util");
-const { WarhornApiClient } = require("./warhorn");
+const { config, logger } = require("./util");
 
 const INTENTS = [
   Intents.FLAGS.GUILDS,
@@ -21,22 +20,11 @@ const PARTIALS = [
 ];
 
 class Bot {
-  constructor(
-    discordToken,
-    warhornToken,
-    warhornEndpointUrl,
-    warhornWebBaseUrl
-  ) {
+  constructor() {
     this.client = new Client({
       intents: INTENTS,
       partials: PARTIALS,
     });
-    this.discordToken = discordToken;
-    this.warhornClient = new WarhornApiClient(
-      warhornToken,
-      warhornEndpointUrl,
-      warhornWebBaseUrl
-    );
 
     this.client.once("ready", () => {
       logger.info(`Logged into Discord as '${this.client.user.tag}'`);
@@ -44,7 +32,7 @@ class Bot {
 
     this.client.on("messageCreate", async (message) => {
       if (message.channel.type === "DM") {
-        DirectMessageEventHandler.handle(this.warhornClient, message);
+        DirectMessageEventHandler.handle(message);
       } else {
         // TODO: reply to sender in the channel
       }
@@ -52,7 +40,7 @@ class Bot {
   }
 
   start() {
-    this.client.login(this.discordToken);
+    this.client.login(config.discordToken);
   }
 }
 

@@ -6,7 +6,7 @@ const { Instruction } = require("../instructions");
 const { logger: defaultLogger } = require("../util");
 
 class DirectMessageEventHandler {
-  static async handle(warhorn, message) {
+  static async handle(message) {
     const logger = defaultLogger.child({
       on: "messageCreate",
       request_id: uuidv4(),
@@ -16,7 +16,6 @@ class DirectMessageEventHandler {
 
     const instruction = Instruction.apply(message, {
       logger,
-      warhorn,
     });
     if (!instruction) return;
 

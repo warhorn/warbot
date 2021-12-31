@@ -3,8 +3,10 @@
 const { DateTime } = require("luxon");
 const { hideLinkEmbed, time } = require("@discordjs/builders");
 
+const { config } = require("../../util");
+
 class EventCalendarMessage {
-  static format(context, sessions) {
+  static format(eventSlug, sessions) {
     if (sessions.length === 0) {
       return "No upcoming sessions";
     }
@@ -15,7 +17,7 @@ class EventCalendarMessage {
         const title =
           session.scenarioOffering.customName || session.scenario.name;
         const venue = session.slot.venue?.name;
-        const url = `${context.baseUrl}/events/${context.eventSlug}/schedule/sessions/${session.uuid}`;
+        const url = `${config.warhornWebBaseUrl}/events/${eventSlug}/schedule/sessions/${session.uuid}`;
         const link = hideLinkEmbed(url);
 
         const lines = [time(startsAt), title];

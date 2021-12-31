@@ -1,3 +1,10 @@
 "use strict";
 
-module.exports.WarhornApiClient = require("./WarhornApiClient");
+const { config } = require("../util");
+const WarhornApiClient = require("./WarhornApiClient");
+
+module.exports.client = new WarhornApiClient(
+  config.warhornToken,
+  config.warhornEndpointUrl,
+  config.warhornWebBaseUrl
+);

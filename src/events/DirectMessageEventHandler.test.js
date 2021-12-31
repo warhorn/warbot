@@ -4,11 +4,10 @@ const DirectMessageEventHandler = require("./DirectMessageEventHandler");
 const { Instruction } = require("../instructions");
 
 describe("handle", () => {
-  let warhorn, message, instruction;
+  let message, instruction;
 
   describe("with a supported instruction", () => {
     beforeEach(() => {
-      warhorn = {};
       message = {
         author: {
           send: jest.fn(),
@@ -23,13 +22,13 @@ describe("handle", () => {
     });
 
     test("executes the instruction", async () => {
-      await DirectMessageEventHandler.handle(warhorn, message);
+      await DirectMessageEventHandler.handle(message);
 
       expect(instruction.execute).toHaveBeenCalled();
     });
 
     test("does not send an error message", async () => {
-      await DirectMessageEventHandler.handle(warhorn, message);
+      await DirectMessageEventHandler.handle(message);
 
       expect(message.author.send).not.toHaveBeenCalled();
     });
@@ -42,7 +41,7 @@ describe("handle", () => {
       });
 
       test("sends an error message", async () => {
-        await DirectMessageEventHandler.handle(warhorn, message);
+        await DirectMessageEventHandler.handle(message);
 
         expect(message.author.send).toHaveBeenCalled();
       });

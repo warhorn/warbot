@@ -1,12 +1,22 @@
 const EventCalendarInstruction = require("./EventCalendarInstruction");
+const { client: warhorn } = require("../warhorn");
+
+const connection = {
+  nodes: [],
+};
+
+jest.mock("../warhorn/WarhornApiClient", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      fetchEventCalendar: jest.fn(() => Promise.resolve(connection)),
+    };
+  });
+});
 
 describe("execute", () => {
-  let connection, message, args, context, instruction;
+  let message, args, context, instruction;
 
   beforeEach(() => {
-    connection = {
-      nodes: [],
-    };
     message = {
       author: {
         send: jest.fn(),
@@ -16,12 +26,7 @@ describe("execute", () => {
       },
     };
     args = ["bionic-dwarf"];
-    context = {
-      warhorn: {
-        fetchEventCalendar: jest.fn(() => Promise.resolve(connection)),
-        webBaseUrl: "https://warhorn.net",
-      },
-    };
+    context = {};
     instruction = new EventCalendarInstruction(message, args, context);
   });
 
@@ -34,7 +39,7 @@ describe("execute", () => {
   test("fetches the event calendar", async () => {
     await instruction.execute();
 
-    expect(context.warhorn.fetchEventCalendar).toHaveBeenCalled();
+    expect(warhorn.fetchEventCalendar).toHaveBeenCalled();
   });
 
   test("sends a reply message", async () => {
