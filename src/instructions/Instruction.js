@@ -4,9 +4,6 @@ const EventCalendarInstruction = require("./EventCalendarInstruction");
 
 const TOKEN_WHITESPACE_REGEX = /\s+/;
 
-// TODO: prefix is only needed for a channel message without a mention, so move that
-// parsing logic into the channel message handler
-
 class Instruction {
   static apply(content) {
     // per https://github.com/meew0/discord-bot-best-practices, if the user sends an
