@@ -15,6 +15,7 @@ class BaseInstruction {
   }
 
   toString() {
+    if (this.args.length === 0) return this.prefix();
     return `${this.prefix()} ${this.args.join(" ")}`;
   }
 }

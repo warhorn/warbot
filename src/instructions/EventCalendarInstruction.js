@@ -6,32 +6,34 @@ const BaseInstruction = require("./BaseInstruction");
 const { EventCalendarMessage } = require("./messages");
 
 class EventCalendarInstruction extends BaseInstruction {
-  constructor(message, args) {
+  constructor(message, args, context) {
     super(message, args);
 
+    this.context = context;
     this.slug = this.args[0];
   }
 
-  async execute(warhorn) {
+  async execute() {
     const startsAfter = DateTime.now();
-
-    // TODO: replace with real logging
-    console.log(
-      `Fetching the calendar for event '${this.slug}' starting after ${startsAfter}`
-    );
 
     this.message.channel.sendTyping();
 
     // TODO: allow user to page through the result set
-    const connection = await warhorn.fetchEventCalendar(this.slug, {
-      startsAfter,
-    });
+    const connection = await this.context.warhorn.fetchEventCalendar(
+      this.slug,
+      {
+        startsAfter,
+      },
+      { logger: this.context.logger }
+    );
 
-    const context = {
-      baseUrl: warhorn.webBaseUrl,
-      eventSlug: this.slug,
-    };
-    const message = EventCalendarMessage.format(context, connection.nodes);
+    const message = EventCalendarMessage.format(
+      {
+        baseUrl: this.context.warhorn.webBaseUrl,
+        eventSlug: this.slug,
+      },
+      connection.nodes
+    );
     this.message.author.send(message);
   }
 
