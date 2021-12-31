@@ -10,7 +10,7 @@ class EventCalendarInstruction extends BaseInstruction {
   constructor(args) {
     super(args);
 
-    this.slug = this.args[0];
+    this.slug = this.args[0]?.toLowerCase();
   }
 
   async execute(context, responder, sendTyping) {

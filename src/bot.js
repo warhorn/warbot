@@ -41,6 +41,12 @@ class Bot {
         case "GROUP_DM":
           DirectMessageEventHandler.handle(message);
           break;
+        case "GUILD_PRIVATE_THREAD":
+          ChannelMessageEventHandler.handle(message);
+          break;
+        case "GUILD_PUBLIC_THREAD":
+          ChannelMessageEventHandler.handle(message);
+          break;
         case "GUILD_TEXT":
           ChannelMessageEventHandler.handle(message);
           break;
