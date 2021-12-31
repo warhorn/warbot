@@ -1,13 +1,16 @@
-"use strict";
+import { Message } from "discord.js";
+import { v4 as uuidv4 } from "uuid";
 
-const { v4: uuidv4 } = require("uuid");
-
-const { Instruction } = require("../instructions");
-const { logger: defaultLogger } = require("../util");
+import {
+  ExecutionContext,
+  MessageResponder,
+} from "../instructions/BaseInstruction";
+import Instruction from "../instructions/Instruction";
+import logger from "../util/logger";
 
 class DirectMessageEventHandler {
-  static async handle(message) {
-    const logger = defaultLogger.child({
+  static async handle(message: Message) {
+    const handlerLogger = logger.child({
       on: "messageCreate",
       request_id: uuidv4(),
       sender: message.author.tag,
@@ -19,18 +22,19 @@ class DirectMessageEventHandler {
 
     // TODO: validate instruction before executing, replying with usage info when invalid
 
+    const context: ExecutionContext = { logger: handlerLogger };
+    const responder: MessageResponder = {
+      respond: (response) => message.author.send(response),
+      sendTyping: () => message.channel.sendTyping(),
+    };
     let status;
     try {
-      await instruction.execute(
-        { logger },
-        (response) => message.author.send(response),
-        () => message.channel.sendTyping()
-      );
+      await instruction.execute(context, responder);
       status = "OK";
     } catch (err) {
       // TODO: distinguish between transient/retriable errors (network blip) and
       // permanent errors (syntax error)
-      logger.error("Error executing instruction", { err });
+      handlerLogger.error("Error executing instruction", { err });
       status = "ERR";
 
       message.author.send(
@@ -38,11 +42,11 @@ class DirectMessageEventHandler {
       );
     }
 
-    logger.info(`[${status}] ${instruction}`, {
+    handlerLogger.info(`[${status}] ${instruction}`, {
       instruction: instruction.toString(),
       status,
     });
   }
 }
 
-module.exports = DirectMessageEventHandler;
+export default DirectMessageEventHandler;

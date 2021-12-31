@@ -1,8 +1,8 @@
-const Instruction = require("./Instruction");
-const EventCalendarInstruction = require("./EventCalendarInstruction");
+import Instruction from "./Instruction";
+import EventCalendarInstruction from "./EventCalendarInstruction";
 
 describe("apply", () => {
-  let content;
+  let content: string;
 
   describe("with an event calendar instruction", () => {
     beforeEach(() => {
@@ -12,7 +12,7 @@ describe("apply", () => {
     test("returns an EventCalendarInstruction", () => {
       const instruction = Instruction.apply(content);
 
-      expect(instruction.prefix()).toEqual(EventCalendarInstruction.Prefix);
+      expect(instruction?.prefix()).toEqual(EventCalendarInstruction.Prefix);
     });
   });
 

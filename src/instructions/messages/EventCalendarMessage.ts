@@ -1,12 +1,10 @@
-"use strict";
+import { DateTime } from "luxon";
+import { hideLinkEmbed, time } from "@discordjs/builders";
 
-const { DateTime } = require("luxon");
-const { hideLinkEmbed, time } = require("@discordjs/builders");
-
-const { config } = require("../../util");
+import config from "../../util/config";
 
 class EventCalendarMessage {
-  static format(eventSlug, sessions) {
+  public static format(eventSlug: string, sessions: any[]): string {
     if (sessions.length === 0) {
       return "No upcoming sessions";
     }
@@ -30,4 +28,4 @@ class EventCalendarMessage {
   }
 }
 
-module.exports = EventCalendarMessage;
+export default EventCalendarMessage;

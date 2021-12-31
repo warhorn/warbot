@@ -1,10 +1,11 @@
-"use strict";
+import dotenv from "dotenv";
 
-const dotenv = require("dotenv").config();
-if (dotenv.error && process.env.NODE_ENV !== "production") {
-  console.error(`Could not load your .env file: ${dotenv.error}`);
+import Bot from "./bot";
+
+const dotenvConfig = dotenv.config();
+if (dotenvConfig.error && process.env.NODE_ENV !== "production") {
+  console.error(`Could not load your .env file: ${dotenvConfig.error}`);
   process.exit(1);
 }
 
-const Bot = require("./bot");
 new Bot().start();

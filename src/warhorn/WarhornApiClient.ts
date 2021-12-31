@@ -1,8 +1,6 @@
-"use strict";
-
-const { gql, GraphQLClient } = require("graphql-request");
-
-const { logger: defaultLogger } = require("../util");
+import { DateTime } from "luxon";
+import { gql, GraphQLClient } from "graphql-request";
+import winston from "winston";
 
 // TODO: sort sessions chronologically
 const EVENT_CALENDAR_QUERY = gql`
@@ -27,8 +25,19 @@ const EVENT_CALENDAR_QUERY = gql`
   }
 `;
 
+export type EventCalendarParams = {
+  startsAfter?: DateTime;
+};
+
+export type QueryContext = {
+  logger: winston.Logger;
+};
+
 class WarhornApiClient {
-  constructor(appToken, endpointUrl, webBaseUrl) {
+  graphQLClient: GraphQLClient;
+  webBaseUrl: string;
+
+  constructor(appToken: string, endpointUrl: string, webBaseUrl: string) {
     this.graphQLClient = new GraphQLClient(endpointUrl, {
       headers: {
         authorization: `Bearer ${appToken}`,
@@ -43,25 +52,29 @@ class WarhornApiClient {
   // instruction execution so that it doesn't need to be explicitly passed around?
 
   async fetchEventCalendar(
-    slug,
-    { startsAfter = null } = {},
-    { logger = defaultLogger } = {}
-  ) {
+    slug: string,
+    params: EventCalendarParams = {},
+    context: QueryContext
+  ): Promise<any> {
     const variables = {
       slug,
-      startsAfter: startsAfter?.toString(),
+      startsAfter: params.startsAfter?.toString(),
     };
 
-    const data = await this.sendQuery(EVENT_CALENDAR_QUERY, variables, logger);
+    const data = await this.sendQuery(EVENT_CALENDAR_QUERY, variables, context);
 
     return data.eventSessions;
   }
 
-  sendQuery(query, variables, logger) {
-    logger.debug("Sending GraphQL query", { query, variables });
+  sendQuery(
+    query: string,
+    variables: object,
+    context: QueryContext
+  ): Promise<any> {
+    context.logger.debug("Sending GraphQL query", { query, variables });
 
     return this.graphQLClient.request(query, variables);
   }
 }
 
-module.exports = WarhornApiClient;
+export default WarhornApiClient;

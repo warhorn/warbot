@@ -1,10 +1,10 @@
-const EventCalendarMessage = require("./EventCalendarMessage");
+import EventCalendarMessage from "./EventCalendarMessage";
 
 const eventSlug = "deadbeef";
 
 describe("format", () => {
   describe("with no sessions", () => {
-    let sessions;
+    let sessions: any[];
 
     beforeEach(() => {
       sessions = [];
@@ -17,7 +17,7 @@ describe("format", () => {
   });
 
   describe("with sessions", () => {
-    let sessions;
+    let sessions: any[];
 
     beforeEach(() => {
       sessions = [
