@@ -2,7 +2,7 @@
 
 const EventCalendarInstruction = require("./EventCalendarInstruction");
 
-const INSTRUCTION_REGEX = /^!warbot\s+(?<instruction>.+)$/;
+const INSTRUCTION_REGEX = /^!warhorn\s+(?<instruction>.+)$/;
 const TOKEN_WHITESPACE_REGEX = /\s+/;
 
 class Instruction {

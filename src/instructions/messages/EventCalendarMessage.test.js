@@ -2,6 +2,7 @@ const EventCalendarMessage = require("./EventCalendarMessage");
 
 const context = {
   baseUrl: "http://warhorn.net",
+  eventSlug: "deadbeef",
 };
 
 describe("format", () => {
@@ -36,6 +37,7 @@ describe("format", () => {
               name: "Swedish American Hall",
             },
           },
+          uuid: "b835a7d0-1e84-49d8-aa51-cb3d2ce1ec39",
         },
       ];
     });
@@ -47,18 +49,18 @@ describe("format", () => {
 
     test("includes the scenario name", () => {
       const message = EventCalendarMessage.format(context, sessions);
-      expect(message).toMatch(sessions[0].scenario.name);
+      expect(message).toMatch("PF1 Mod: City of Golden Death");
     });
 
     test("includes the venue name", () => {
       const message = EventCalendarMessage.format(context, sessions);
-      expect(message).toMatch(sessions[0].slot.venue.name);
+      expect(message).toMatch("Swedish American Hall");
     });
 
     test("includes the schedule url", () => {
       const message = EventCalendarMessage.format(context, sessions);
       expect(message).toMatch(
-        `/events/${context.slug}/schedule/sessions/${sessions[0].uuid}`
+        "/events/deadbeef/schedule/sessions/b835a7d0-1e84-49d8-aa51-cb3d2ce1ec39"
       );
     });
   });

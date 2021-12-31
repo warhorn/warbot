@@ -15,7 +15,7 @@ class EventCalendarMessage {
         const title =
           session.scenarioOffering.customName || session.scenario.name;
         const venue = session.slot.venue?.name;
-        const url = `${context.baseUrl}/events/${context.slug}/schedule/sessions/${session.uuid}`;
+        const url = `${context.baseUrl}/events/${context.eventSlug}/schedule/sessions/${session.uuid}`;
         const link = hideLinkEmbed(url);
 
         const lines = [time(startsAt), title];
