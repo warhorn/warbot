@@ -5,16 +5,8 @@ const connection = {
   nodes: [],
 };
 
-jest.mock("../warhorn/WarhornApiClient", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      fetchEventCalendar: jest.fn(() => Promise.resolve(connection)),
-    };
-  });
-});
-
 describe("execute", () => {
-  let message, args, context, instruction, responder, sendTyping;
+  let message, args, context, instruction, responder, sendTyping, warhornSpy;
 
   beforeEach(() => {
     message = {};
@@ -23,6 +15,9 @@ describe("execute", () => {
     instruction = new EventCalendarInstruction(message, args);
     responder = jest.fn();
     sendTyping = jest.fn();
+    warhornSpy = jest
+      .spyOn(warhorn, "fetchEventCalendar")
+      .mockImplementation(() => Promise.resolve(connection));
   });
 
   test("sends a typing event to the channel", async () => {
@@ -34,7 +29,7 @@ describe("execute", () => {
   test("fetches the event calendar", async () => {
     await instruction.execute(context, responder, sendTyping);
 
-    expect(warhorn.fetchEventCalendar).toHaveBeenCalled();
+    expect(warhornSpy).toHaveBeenCalled();
   });
 
   test("sends a response message", async () => {
