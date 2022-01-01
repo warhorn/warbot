@@ -1,7 +1,5 @@
-"use strict";
-
-const ecsFormat = require("@elastic/ecs-winston-format");
-const winston = require("winston");
+import ecsFormat from "@elastic/ecs-winston-format";
+import winston from "winston";
 
 const logger = winston.createLogger({
   format: ecsFormat(),
@@ -9,4 +7,4 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
-module.exports = logger;
+export default logger;

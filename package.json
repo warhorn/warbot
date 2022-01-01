@@ -2,16 +2,20 @@
   "name": "warbot",
   "version": "0.0.2",
   "description": "A Discord bot for Warhorn",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=16.6.0"
   },
   "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc -w",
     "prepare": "husky install",
-    "start": "node src/index.js",
-    "test": "jest",
+    "start": "node dist/index.js",
+    "start:watch": "nodemon dist/index.js",
+    "test": "jest --detectOpenHandles --forceExit --verbose",
     "test:ci": "jest --ci",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --detectOpenHandles --forceExit --verbose --watchAll",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run build:watch\" \"npm run start:watch\""
   },
   "repository": {
     "type": "git",
@@ -37,12 +41,18 @@
   },
   "devDependencies": {
     "@types/luxon": "^2.0.8",
+    "@types/uuid": "^8.3.3",
+    "concurrently": "^6.5.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.2",
-    "jest": "^27.2.1",
+    "jest": "^27.4.5",
+    "jest-discordjs-mocks": "^1.0.2",
     "lint-staged": "^11.1.2",
-    "prettier": "^2.4.1"
+    "nodemon": "^2.0.15",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

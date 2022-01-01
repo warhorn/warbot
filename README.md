@@ -6,7 +6,7 @@ A [Discord](https://discord.com/) bot for [Warhorn](https://warhorn.net)
 
 See CONTRIBUTING.md for general contribution guidelines.
 
-Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) and runs on [Node.js](https://nodejs.org/).
+Warbot is written in [TypeScript](https://www.typescriptlang.org/) and runs on [Node.js](https://nodejs.org/).
 
 ### Build and run Warbot locally
 
@@ -23,10 +23,15 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
    ```sh
    $ npm install
 
-   added 28 packages, and audited 29 packages in 400ms
+   > warbot@0.0.2 prepare
+   > husky install
 
-   4 packages are looking for funding
-     run `npm fund` for details
+   husky - Git hooks installed
+
+   up to date, audited 820 packages in 1s
+
+   59 packages are looking for funding
+   run `npm fund` for details
 
    found 0 vulnerabilities
    ```
@@ -43,22 +48,22 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
 
    Retrieve the bot token from the [Discord bot settings page](https://discord.com/developers/applications/701978523182694481/bot) and replace the `DISCORD_BOT_TOKEN` environment variable's placeholder value with the real bot token. If you do not have access to that page, ask for it in `#bot_dev` on the Warhorn Discord server.
 
+   Ask [Brian Moseley](bcm@warhorn.net) for the Warhorn app token and replace the `WARHORN_APP_TOKEN` environment variable's placeholder with the real app token.
+
 4. Run the tests
 
    ```sh
    $ npm test
 
-   > warbot@0.0.1 test
-   > jest
+   > warbot@0.0.2 test
+   > jest --detectOpenHandles --forceExit --verbose
 
-   PASS  src/bot.test.js
-   start
-      ✓ logs in (12 ms)
+   ...
 
-   Test Suites: 1 passed, 1 total
-   Tests:       1 passed, 1 total
+   Test Suites: 6 passed, 6 total
+   Tests:       17 passed, 17 total
    Snapshots:   0 total
-   Time:        0.229 s, estimated 1 s
+   Time:        1.657 s, estimated 2 s
    Ran all test suites.
    ```
 
@@ -67,19 +72,17 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
    ```sh
    $ npm run test:watch
 
-    PASS  src/bot.test.js
-     start
-       ✓ logs in (12 ms)
+   ...
 
-   Test Suites: 1 passed, 1 total
-   Tests:       1 passed, 1 total
+   Test Suites: 6 passed, 6 total
+   Tests:       17 passed, 17 total
    Snapshots:   0 total
-   Time:        0.233 s, estimated 1 s
-   Ran all test suites related to changed files.
+   Time:        1.628 s, estimated 2 s
+   Ran all test suites.
 
    Watch Usage
-   › Press a to run all tests.
    › Press f to run only failed tests.
+   › Press o to only run tests related to changed files.
    › Press p to filter by a filename regex pattern.
    › Press t to filter by a test name regex pattern.
    › Press q to quit watch mode.
@@ -91,10 +94,10 @@ Warbot is written in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/J
    ```sh
    $ npm start
 
-   > warbot@0.0.1 start
-   > node src/index.js
+   > warbot@0.0.2 start
+   > node dist/index.js
 
-   Ready!
+   {"@timestamp":"2022-01-01T02:35:25.838Z","log.level":"info","message":"Logged into Discord as 'bcm testbot#0942'","ecs":{"version":"1.6.0"}}
    ```
 
 ### Code style and quality

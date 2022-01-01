@@ -1,12 +1,11 @@
-"use strict";
+import { DateTime } from "luxon";
+import { hideLinkEmbed, time } from "@discordjs/builders";
 
-const { DateTime } = require("luxon");
-const { hideLinkEmbed, time } = require("@discordjs/builders");
-
-const { config } = require("../../util");
+import config from "../../util/config";
+import Session from "../../warhorn/models/Session";
 
 class EventCalendarMessage {
-  static format(eventSlug, sessions) {
+  public static format(eventSlug: string, sessions: Session[]): string {
     if (sessions.length === 0) {
       return "No upcoming sessions";
     }
@@ -30,4 +29,4 @@ class EventCalendarMessage {
   }
 }
 
-module.exports = EventCalendarMessage;
+export default EventCalendarMessage;

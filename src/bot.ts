@@ -1,12 +1,9 @@
-"use strict";
+import { Client, Intents, Constants } from "discord.js";
 
-const { Client, Intents } = require("discord.js");
-
-const {
-  ChannelMessageEventHandler,
-  DirectMessageEventHandler,
-} = require("./events");
-const { config, logger } = require("./util");
+import ChannelMessageEventHandler from "./events/ChannelMessageEventHandler";
+import config from "./util/config";
+import DirectMessageEventHandler from "./events/DirectMessageEventHandler";
+import logger from "./util/logger";
 
 const INTENTS = [
   Intents.FLAGS.GUILDS,
@@ -19,10 +16,12 @@ const INTENTS = [
 ];
 
 const PARTIALS = [
-  "CHANNEL", // https://github.com/discordjs/discord.js/issues/5516
+  Constants.PartialTypes.CHANNEL, // https://github.com/discordjs/discord.js/issues/5516
 ];
 
 class Bot {
+  client: Client;
+
   constructor() {
     this.client = new Client({
       intents: INTENTS,
@@ -30,15 +29,14 @@ class Bot {
     });
 
     this.client.once("ready", () => {
-      logger.info(`Logged into Discord as '${this.client.user.tag}'`);
+      if (this.client.user) {
+        logger.info(`Logged into Discord as '${this.client.user.tag}'`);
+      }
     });
 
     this.client.on("messageCreate", async (message) => {
       switch (message.channel.type) {
         case "DM":
-          DirectMessageEventHandler.handle(message);
-          break;
-        case "GROUP_DM":
           DirectMessageEventHandler.handle(message);
           break;
         case "GUILD_PRIVATE_THREAD":
@@ -59,4 +57,4 @@ class Bot {
   }
 }
 
-module.exports = Bot;
+export default Bot;
