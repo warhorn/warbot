@@ -2,9 +2,10 @@ import { DateTime } from "luxon";
 import { hideLinkEmbed, time } from "@discordjs/builders";
 
 import config from "../../util/config";
+import Session from "../../warhorn/models/Session";
 
 class EventCalendarMessage {
-  public static format(eventSlug: string, sessions: any[]): string {
+  public static format(eventSlug: string, sessions: Session[]): string {
     if (sessions.length === 0) {
       return "No upcoming sessions";
     }

@@ -1,10 +1,11 @@
 import EventCalendarMessage from "./EventCalendarMessage";
+import Session from "../../warhorn/models/Session";
 
 const eventSlug = "deadbeef";
 
 describe("format", () => {
   describe("with no sessions", () => {
-    let sessions: any[];
+    let sessions: Session[];
 
     beforeEach(() => {
       sessions = [];
@@ -17,7 +18,7 @@ describe("format", () => {
   });
 
   describe("with sessions", () => {
-    let sessions: any[];
+    let sessions: Session[];
 
     beforeEach(() => {
       sessions = [

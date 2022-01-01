@@ -2,6 +2,8 @@ import { DateTime } from "luxon";
 import { gql, GraphQLClient } from "graphql-request";
 import winston from "winston";
 
+import Session from "./models/Session";
+
 // TODO: sort sessions chronologically
 const EVENT_CALENDAR_QUERY = gql`
   query EventCalendar($slug: String!, $startsAfter: ISO8601DateTime) {
@@ -25,12 +27,24 @@ const EVENT_CALENDAR_QUERY = gql`
   }
 `;
 
+export type QueryContext = {
+  logger: winston.Logger;
+};
+
+type QueryResult = {
+  data: any;
+};
+
 export type EventCalendarParams = {
   startsAfter?: DateTime;
 };
 
-export type QueryContext = {
-  logger: winston.Logger;
+export type EventSessionConnection = {
+  nodes: Session[];
+};
+
+type EventCalendarResponse = {
+  eventSessions: EventSessionConnection;
 };
 
 class WarhornApiClient {
@@ -55,25 +69,33 @@ class WarhornApiClient {
     slug: string,
     params: EventCalendarParams = {},
     context: QueryContext
-  ): Promise<any> {
+  ): Promise<EventSessionConnection> {
     const variables = {
       slug,
       startsAfter: params.startsAfter?.toString(),
     };
 
-    const data = await this.sendQuery(EVENT_CALENDAR_QUERY, variables, context);
+    const response = (await this.sendQuery(
+      EVENT_CALENDAR_QUERY,
+      variables,
+      context
+    )) as EventCalendarResponse;
 
-    return data.eventSessions;
+    return response.eventSessions;
   }
 
-  sendQuery(
+  async sendQuery(
     query: string,
     variables: object,
     context: QueryContext
-  ): Promise<any> {
+  ): Promise<object> {
     context.logger.debug("Sending GraphQL query", { query, variables });
 
-    return this.graphQLClient.request(query, variables);
+    const result = (await this.graphQLClient.request(
+      query,
+      variables
+    )) as QueryResult;
+    return result.data as object;
   }
 }
 
