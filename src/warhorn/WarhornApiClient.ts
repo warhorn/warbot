@@ -31,9 +31,7 @@ export type QueryContext = {
   logger: winston.Logger;
 };
 
-type QueryResult = {
-  data: any;
-};
+type QueryResult = object;
 
 export type EventCalendarParams = {
   startsAfter?: DateTime;
@@ -43,7 +41,7 @@ export type EventSessionConnection = {
   nodes: Session[];
 };
 
-type EventCalendarResponse = {
+type EventCalendarQueryResult = {
   eventSessions: EventSessionConnection;
 };
 
@@ -79,7 +77,7 @@ class WarhornApiClient {
       EVENT_CALENDAR_QUERY,
       variables,
       context
-    )) as EventCalendarResponse;
+    )) as EventCalendarQueryResult;
 
     return response.eventSessions;
   }
@@ -88,14 +86,10 @@ class WarhornApiClient {
     query: string,
     variables: object,
     context: QueryContext
-  ): Promise<object> {
+  ): Promise<QueryResult> {
     context.logger.debug("Sending GraphQL query", { query, variables });
 
-    const result = (await this.graphQLClient.request(
-      query,
-      variables
-    )) as QueryResult;
-    return result.data as object;
+    return await this.graphQLClient.request(query, variables);
   }
 }
 
