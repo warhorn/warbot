@@ -48,7 +48,7 @@ Warbot is written in [TypeScript](https://www.typescriptlang.org/) and runs on [
 
    Retrieve the bot token from the [Discord bot settings page](https://discord.com/developers/applications/701978523182694481/bot) and replace the `DISCORD_BOT_TOKEN` environment variable's placeholder value with the real bot token. If you do not have access to that page, ask for it in `#bot_dev` on the Warhorn Discord server.
 
-   Ask [Brian Moseley](bcm@warhorn.net) for the Warhorn app token and replace the `WARHORN_APP_TOKEN` environment variable's placeholder with the real app token.
+   Ask [@bcm](https://github.com/bcm) for the Warhorn app token and replace the `WARHORN_APP_TOKEN` environment variable's placeholder with the real app token.
 
 4. Run the tests
 
