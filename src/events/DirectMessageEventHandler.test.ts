@@ -35,7 +35,7 @@ describe("handle", () => {
       jest.spyOn(Instruction, "apply").mockImplementation(() => instruction);
       jest
         .spyOn(message.author, "send")
-        .mockImplementation(() => Promise.resolve({} as Message));
+        .mockImplementation(() => Promise.resolve({} as Message<false>));
     });
 
     describe("when execution succeeds", () => {
