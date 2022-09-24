@@ -2,10 +2,6 @@ type Scenario = {
   name: string;
 };
 
-type ScenarioOffering = {
-  customName: string | null;
-};
-
 type Venue = {
   name: string;
 };
@@ -16,8 +12,8 @@ type Slot = {
 };
 
 type Session = {
+  name: string | null;
   scenario: Scenario;
-  scenarioOffering: ScenarioOffering;
   slot: Slot;
   uuid: string;
 };

@@ -13,8 +13,7 @@ class EventCalendarMessage {
     return sessions
       .map((session) => {
         const startsAt = DateTime.fromISO(session.slot.startsAt).toJSDate();
-        const title =
-          session.scenarioOffering.customName || session.scenario.name;
+        const title = session.name;
         const venue = session.slot.venue?.name;
         const url = `${config.warhornWebBaseUrl}/events/${eventSlug}/schedule/sessions/${session.uuid}`;
         const link = hideLinkEmbed(url);

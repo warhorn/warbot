@@ -9,11 +9,9 @@ const EVENT_CALENDAR_QUERY = gql`
   query EventCalendar($slug: String!, $startsAfter: ISO8601DateTime) {
     eventSessions(events: [$slug], startsAfter: $startsAfter) {
       nodes {
+        name
         scenario {
           name
-        }
-        scenarioOffering {
-          customName
         }
         slot {
           startsAt

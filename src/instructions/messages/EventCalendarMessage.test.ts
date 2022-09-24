@@ -23,11 +23,9 @@ describe("format", () => {
     beforeEach(() => {
       sessions = [
         {
+          name: "My PF Game",
           scenario: {
             name: "PF1 Mod: City of Golden Death",
-          },
-          scenarioOffering: {
-            customName: null,
           },
           slot: {
             startsAt: "2022-01-30T13:00:00-08:00",
@@ -45,9 +43,9 @@ describe("format", () => {
       expect(message).toMatch("t:1643576400");
     });
 
-    test("includes the scenario name", () => {
+    test("includes the session name", () => {
       const message = EventCalendarMessage.format(eventSlug, sessions);
-      expect(message).toMatch("PF1 Mod: City of Golden Death");
+      expect(message).toMatch("My PF Game");
     });
 
     test("includes the venue name", () => {

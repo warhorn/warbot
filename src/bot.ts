@@ -13,6 +13,7 @@ const INTENTS = [
   GatewayIntentBits.DirectMessages,
   GatewayIntentBits.DirectMessageReactions,
   GatewayIntentBits.DirectMessageTyping,
+  GatewayIntentBits.MessageContent,
 ];
 
 const PARTIALS = [
