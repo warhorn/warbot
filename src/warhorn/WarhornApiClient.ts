@@ -35,6 +35,10 @@ const TOGGLE_FEATURE_FLAG_MUTATION = gql`
         feature
         isEnabled
       }
+      errors {
+        message
+        path
+      }
     }
   }
 `;
@@ -45,6 +49,11 @@ export type QueryContext = {
 };
 
 type QueryResult = object;
+
+type UserError = {
+  message?: String;
+  path?: String[];
+};
 
 export type EventCalendarParams = {
   startsAfter?: DateTime;
@@ -61,6 +70,7 @@ type EventCalendarQueryResult = {
 type ToggleFeatureFlagResult = {
   toggleFeatureFlag: {
     enablement: FeatureFlagEnablement;
+    errors: UserError[];
   };
 };
 
@@ -107,7 +117,7 @@ class WarhornApiClient {
   ): Promise<FeatureFlagEnablement> {
     const variables = {
       input: {
-        identityInput: {
+        identity: {
           provider: "DISCORD",
           uid: context.caller.uid,
         },
@@ -120,6 +130,13 @@ class WarhornApiClient {
       variables,
       context
     )) as ToggleFeatureFlagResult;
+    const userErrors = response?.toggleFeatureFlag?.errors || [];
+    if (userErrors.length > 0) {
+      const errMsgs = userErrors
+        .map((err) => `${(err.path || []).join("/")} ${err.message}`)
+        .join(", ");
+      throw new Error(`User errors: ${errMsgs}`);
+    }
 
     return response.toggleFeatureFlag.enablement;
   }
