@@ -1,5 +1,6 @@
 import Instruction from "./Instruction";
 import EventCalendarInstruction from "./EventCalendarInstruction";
+import FeatureFlagInstruction from "./FeatureFlagInstruction";
 
 describe("apply", () => {
   let content: string;
@@ -13,6 +14,18 @@ describe("apply", () => {
       const instruction = Instruction.apply(content);
 
       expect(instruction?.prefix()).toEqual(EventCalendarInstruction.Prefix);
+    });
+  });
+
+  describe("with a feature flag instruction", () => {
+    beforeEach(() => {
+      content = "feature abc123";
+    });
+
+    test("returns a FeatureFlagInstruction", () => {
+      const instruction = Instruction.apply(content);
+
+      expect(instruction?.prefix()).toEqual(FeatureFlagInstruction.Prefix);
     });
   });
 

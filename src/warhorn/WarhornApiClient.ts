@@ -2,6 +2,8 @@ import { DateTime } from "luxon";
 import { gql, GraphQLClient } from "graphql-request";
 import winston from "winston";
 
+import FeatureFlagEnablement from "./models/FeatureFlagEnablement";
+import Identity from "./models/Identity";
 import Session from "./models/Session";
 
 // TODO: sort sessions chronologically
@@ -25,7 +27,20 @@ const EVENT_CALENDAR_QUERY = gql`
   }
 `;
 
+// implicitly executes the mutation as the bot user
+const TOGGLE_FEATURE_FLAG_MUTATION = gql`
+  mutation ToggleFeatureFlag($input: ToggleFeatureFlagInput!) {
+    toggleFeatureFlag(input: $input) {
+      enablement {
+        feature
+        isEnabled
+      }
+    }
+  }
+`;
+
 export type QueryContext = {
+  caller: Identity;
   logger: winston.Logger;
 };
 
@@ -41,6 +56,12 @@ export type EventSessionConnection = {
 
 type EventCalendarQueryResult = {
   eventSessions: EventSessionConnection;
+};
+
+type ToggleFeatureFlagResult = {
+  toggleFeatureFlag: {
+    enablement: FeatureFlagEnablement;
+  };
 };
 
 class WarhornApiClient {
@@ -78,6 +99,29 @@ class WarhornApiClient {
     )) as EventCalendarQueryResult;
 
     return response.eventSessions;
+  }
+
+  async toggleFeatureFlag(
+    feature: string,
+    context: QueryContext
+  ): Promise<FeatureFlagEnablement> {
+    const variables = {
+      input: {
+        identityInput: {
+          provider: "DISCORD",
+          uid: context.caller.uid,
+        },
+        feature,
+      },
+    };
+
+    const response = (await this.sendQuery(
+      TOGGLE_FEATURE_FLAG_MUTATION,
+      variables,
+      context
+    )) as ToggleFeatureFlagResult;
+
+    return response.toggleFeatureFlag.enablement;
   }
 
   async sendQuery(
