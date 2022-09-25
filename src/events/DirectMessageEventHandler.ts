@@ -22,7 +22,10 @@ class DirectMessageEventHandler {
 
     // TODO: validate instruction before executing, replying with usage info when invalid
 
-    const context: ExecutionContext = { logger: handlerLogger };
+    const context: ExecutionContext = {
+      author: message.author,
+      logger: handlerLogger,
+    };
     const responder: MessageResponder = {
       respond: (response) => message.author.send(response),
       sendTyping: () => message.channel.sendTyping(),

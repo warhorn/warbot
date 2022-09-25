@@ -31,11 +31,11 @@ class EventCalendarInstruction extends BaseInstruction {
     const connection = await warhorn.fetchEventCalendar(
       this.slug,
       params,
-      context
+      this.makeQueryContext(context)
     );
 
-    const response = EventCalendarMessage.format(this.slug, connection.nodes);
-    responder.respond(response);
+    const message = EventCalendarMessage.format(this.slug, connection.nodes);
+    responder.respond(message);
   }
 
   prefix() {

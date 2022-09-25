@@ -1,5 +1,6 @@
 import BaseInstruction from "./BaseInstruction";
 import EventCalendarInstruction from "./EventCalendarInstruction";
+import FeatureFlagInstruction from "./FeatureFlagInstruction";
 
 const TOKEN_WHITESPACE_REGEX = /\s+/;
 
@@ -11,11 +12,14 @@ class Instruction {
     const [instructionPrefix, ...args] = content
       .trim()
       .split(TOKEN_WHITESPACE_REGEX);
-    if (instructionPrefix === EventCalendarInstruction.Prefix) {
-      return new EventCalendarInstruction(args);
+    switch (instructionPrefix) {
+      case EventCalendarInstruction.Prefix:
+        return new EventCalendarInstruction(args);
+      case FeatureFlagInstruction.Prefix:
+        return new FeatureFlagInstruction(args);
+      default:
+        return null;
     }
-
-    return null;
   }
 }
 

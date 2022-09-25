@@ -1,32 +1,31 @@
 import { User } from "discord.js";
 
-import EventCalendarInstruction from "./EventCalendarInstruction";
+import FeatureFlagEnablement from "../warhorn/models/FeatureFlagEnablement";
+import FeatureFlagInstruction from "./FeatureFlagInstruction";
 import { ExecutionContext, MessageResponder } from "./BaseInstruction";
 import logger from "../util/logger";
 import warhorn from "../warhorn/client";
 
 const author = {} as User;
-const connection = {
-  nodes: [],
-};
+const enablement = {} as FeatureFlagEnablement;
 
 describe("execute", () => {
   let args: string[],
     context: ExecutionContext,
-    instruction: EventCalendarInstruction,
+    instruction: FeatureFlagInstruction,
     responder: MessageResponder;
 
   beforeEach(() => {
-    args = ["bionic-dwarf"];
+    args = ["a-flag"];
     context = { author, logger };
-    instruction = new EventCalendarInstruction(args);
+    instruction = new FeatureFlagInstruction(args);
     responder = {
       respond: jest.fn().mockImplementation(() => {}),
       sendTyping: jest.fn(),
     };
     jest
-      .spyOn(warhorn, "fetchEventCalendar")
-      .mockImplementation(() => Promise.resolve(connection));
+      .spyOn(warhorn, "toggleFeatureFlag")
+      .mockImplementation(() => Promise.resolve(enablement));
   });
 
   test("sends a typing event to the channel", async () => {
@@ -38,7 +37,7 @@ describe("execute", () => {
   test("fetches the event calendar", async () => {
     await instruction.execute(context, responder);
 
-    expect(warhorn.fetchEventCalendar).toHaveBeenCalled();
+    expect(warhorn.toggleFeatureFlag).toHaveBeenCalled();
   });
 
   test("sends a response message", async () => {

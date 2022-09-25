@@ -1,6 +1,11 @@
+import { User } from "discord.js";
 import winston from "winston";
 
+import Identity from "../warhorn/models/Identity";
+import { QueryContext } from "../warhorn/WarhornApiClient";
+
 export type ExecutionContext = {
+  author: User;
   logger: winston.Logger;
 };
 
@@ -22,6 +27,13 @@ class BaseInstruction {
     responder: MessageResponder
   ): Promise<void> {
     throw "Method unimplemented";
+  }
+
+  makeQueryContext(executionContext: ExecutionContext): QueryContext {
+    return {
+      caller: { uid: executionContext.author.id } as Identity,
+      logger: executionContext.logger,
+    };
   }
 
   prefix(): string {
